@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发展方向模型图表展示</title>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        /* 导航栏 */
+        nav {
+            background-color: #2c3e50;
+            padding: 15px 20px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* 内容容器 */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 图表容器 */
+        .chart-container {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h2 {
+            margin-top: 0;
+            color: #3498db;
+        }
+
+        .chart-container p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* 金字塔图样式 */
+        .pyramid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pyramid .layer {
+            width: 200px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pyramid .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .pyramid .top {
+            width: 100px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        }
+
+        .pyramid .middle {
+            width: 150px;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+        }
+
+        .pyramid .bottom {
+            width: 200px;
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+        }
+
+        /* 三角形模型样式 */
+        .triangle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 300px;
+        }
+
+        .triangle .corner {
+            position: absolute;
+            width: 120px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .triangle .corner:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .triangle .top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        }
+
+        .triangle .left {
+            bottom: 0;
+            left: 10%;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+        }
+
+        .triangle .right {
+            bottom: 0;
+            right: 10%;
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+        }
+
+        .triangle .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* 流程图样式 */
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .flowchart .step {
+            width: 200px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .flowchart .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .flowchart .step::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #ddd;
+        }
+
+        .flowchart .step:last-child::after {
+            display: none;
+        }
+
+        /* 维恩图样式 */
+        .venn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            position: relative;
+        }
+
+        .venn .circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0.7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .venn .circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .venn .circle1 {
+            background: radial-gradient(circle, #ff6666, #ff9999);
+            top: 20%;
+            left: 20%;
+        }
+
+        .venn .circle2 {
+            background: radial-gradient(circle, #66ff66, #99ff99);
+            top: 20%;
+            right: 20%;
+        }
+
+        .venn .circle3 {
+            background: radial-gradient(circle, #6666ff, #9999ff);
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .venn .intersection {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* 矩阵图样式 */
+        .matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 10px;
+            width: 400px;
+            margin: 0 auto;
+        }
+
+        .matrix .cell {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .matrix .cell:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .matrix .strengths {
+            background: linear-gradient(135deg, #ccffcc, #e6ffe6);
+        }
+
+        .matrix .weaknesses {
+            background: linear-gradient(135deg, #ffcccc, #ffe6e6);
+        }
+
+        .matrix .opportunities {
+            background: linear-gradient(135deg, #ccccff, #e6e6ff);
+        }
+
+        .matrix .threats {
+            background: linear-gradient(135deg, #ffffcc, #ffffe6);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: #fff;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="logo">发展方向模型</div>
+        <ul>
+            <li><a href="#pyramid">金字塔图</a></li>
+            <li><a href="#triangle">三角形模型</a></li>
+            <li><a href="#flowchart">流程图</a></li>
+            <li><a href="#venn">维恩图</a></li>
+            <li><a href="#matrix">矩阵图</a></li>
+        </ul>
+    </nav>
+
+    <!-- 内容区域 -->
+    <div class="container">
+        <h1>发展方向模型图表展示</h1>
+
+        <!-- 金字塔图 -->
+        <div id="pyramid" class="chart-container">
+            <h2>1. 金字塔图</h2>
+            <p>金字塔图展示了从基础到高级的层次结构，底层是“我是谁”，中层是“我在哪”，顶层是“我该做什么”。</p>
+            <div class="pyramid">
+                <div class="layer top">顶层：我该做什么<br>创造价值、信息差、能力差</div>
+                <div class="layer middle">中层：我在哪<br>行业位置、势能、动能、影响力</div>
+                <div class="layer bottom">底层：我是谁<br>能力圈、相对优势、劣势</div>
+            </div>
+        </div>
+
+        <!-- 三角形模型 -->
+        <div id="triangle" class="chart-container">
+            <h2>2. 三角形模型</h2>
+            <p>三角形模型通过三个角分别表示“我是谁”、“我在哪”、“我该做什么”，中心是最优发展路径。</p>
+            <div class="triangle">
+                <div class="corner top">我是谁<br>能力圈、相对优势、劣势</div>
+                <div class="corner left">我在哪<br>行业位置、势能、动能</div>
+                <div class="corner right">我该做什么<br>创造价值、信息差</div>
+                <div class="center">最优发展路径</div>
+            </div>
+        </div>
+
+        <!-- 流程图 -->
+        <div id="flowchart" class="chart-container">
+            <h2>3. 流程图</h2>
+            <p>流程图展示了从“自我认知”到“行动策略”的逐步过程。</p>
+            <div class="flowchart">
+                <div class="step">第一步：我是谁<br>能力圈、相对优势、劣势</div>
+                <div class="step">第二步：我在哪<br>行业位置、势能、动能</div>
+                <div class="step">第三步：我该做什么<br>创造价值、信息差</div>
+            </div>
+        </div>
+
+        <!-- 维恩图 -->
+        <div id="venn" class="chart-container">
+            <h2>4. 维恩图</h2>
+            <p>维恩图展示了“我的能力”、“市场需求”和“我的独特优势”的交集，即最佳发展方向。</p>
+            <div class="venn">
+                <div class="circle circle1">我的能力</div>
+                <div class="circle circle2">市场需求</div>
+                <div class="circle circle3">我的独特优势</div>
+                <div class="intersection">最佳发展方向</div>
+            </div>
+        </div>
+
+        <!-- 矩阵图 -->
+        <div id="matrix" class="chart-container">
+            <h2>5. 矩阵图（SWOT分析变体）</h2>
+            <p>矩阵图通过SWOT分析展示了内部优势、劣势和外部机会、威胁。</p>
+            <div class="matrix">
+                <div class="cell strengths">优势<br>相对优势、能力圈</div>
+                <div class="cell weaknesses">劣势<br>不擅长的领域</div>
+                <div class="cell opportunities">机会<br>势能、行业机会</div>
+                <div class="cell threats">威胁<br>行业竞争、环境挑战</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        &copy; 2023 发展方向模型展示 | 设计：Your Name
+    </footer>
+</body>
+</html>
